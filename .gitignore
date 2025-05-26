@@ -1,0 +1,15 @@
+# Gimp images
+*.xcf
+
+# Testing
+sandbox/
+test/
+
+# dependencies
+node_modules/
+
+.recycle/
+
+aws.bat
+firebase.bat
+authList.bat

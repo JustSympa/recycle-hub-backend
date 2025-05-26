@@ -1,0 +1,47 @@
+{
+    "fullName": "How to turn plastic Bottles into Trash Bin",
+    "keywords": ["plastic", "polyesters", "polyethylene terephthalate", "supermont", "valclair"],
+    "time": 30,
+    "sections": [
+        {
+            "type": "video",
+            "url": "https://reclyclehub.supabase.com/cdn/video1.mp4?token=PAJAvzekze9032jzJZE8U0jede0"
+        },
+        {
+            "type": "text",
+            "content": "Lorem ipsum ..."
+        },
+        {
+            "type": "headline",
+            "content": "1. Doing this"
+        },
+        {
+            "type": "text",
+            "content": "Lorem ipsum ..."
+        },
+        {
+            "type": "text",
+            "content": "Lorem ipsum ..."
+        },
+        {
+            "type": "image",
+            "url": "https://reclyclehub.supabase.com/cdn/img.mp4?token=PAJAvzekze9032jzJZE8U0jede0"
+        },
+        {
+            "type": "headline",
+            "content": "2. Doing this"
+        },
+        {
+            "type": "text",
+            "content": "Lorem ipsum ..."
+        },
+        {
+            "type": "text",
+            "content": "Lorem ipsum ..."
+        },
+        {
+            "type": "image",
+            "url": "https://reclyclehub.supabase.com/cdn/img.mp4?token=PAJAvzekze9032jzJZE8U0jede0"
+        }
+    ]
+}
