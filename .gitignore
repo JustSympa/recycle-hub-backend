@@ -9,7 +9,3 @@ test/
 node_modules/
 
 .recycle/
-
-aws.bat
-firebase.bat
-authList.bat

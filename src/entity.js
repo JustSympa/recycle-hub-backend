@@ -128,6 +128,11 @@ export class SearchParams {
     text = ''
     categories = [0]
     constructor(text, categories) { this.text = text; this.categories = categories }
+    toString() { return this.toJSON() }
+    toObject() { return {text: this.text, categories: this.categories} }
+    toJSON() { return JSON.stringify(this.toObject()) }
+    static fromObject(object) { return new SearchParams(object.text, object.categories) }
+    static fromJSON(object) { return SearchParams.fromObject(JSON.parse(object)) }
 }
 
 export class User {
