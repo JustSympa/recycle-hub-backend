@@ -29,7 +29,7 @@ class DatabaseInterface {
     //     readNotification        |      readNotifications
     // Mark a notification as read | Checks for not read notifications
     async readUserNotifications(user = new Entity.User) {
-        return new Entity.User
+        return [new Entity.Notification]
     }
     async readUserNotification(notification = new Entity.Notification) {
         return new Entity.Notification
