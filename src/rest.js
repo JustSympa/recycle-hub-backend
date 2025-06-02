@@ -100,13 +100,23 @@ io.post('/documents/search', async (req, res) => {
         res.status(400).json({ success: false, error: err.message })
     }
 })
+// READ Document Content
+io.get('/documents/:id/content', async (req, res) => {
+    try {
+        const doc = Entity.Document.fromObject({ id: Number(req.params.id) })
+        const result = await Server.DocumentManager.ReadContent(doc)
+        res.json({ success: true, data: result })
+    } catch (err) {
+        res.status(404).json({ success: false, error: err.message })
+    }
+})
 
 // --- REQUEST ---
 // CREATE Request
 io.post('/requests', async (req, res) => {
     try {
-        const request = Entity.Request.fromObject(req.body)
-        const result = await Server.RequestManager.Create(request)
+        const params = Entity.RequestParams.fromObject(req.body)
+        const result = await Server.RequestManager.Create(params)
         res.json({ success: true, data: result })
     } catch (err) {
         res.status(400).json({ success: false, error: err.message })
@@ -157,8 +167,8 @@ io.delete('/requests/:id', async (req, res) => {
 // CREATE Proposal
 io.post('/proposals', async (req, res) => {
     try {
-        const proposal = Entity.Proposal.fromObject(req.body)
-        const result = await Server.ProposalManager.Create(proposal)
+        const params = Entity.ProposalParams.fromObject(req.body)
+        const result = await Server.ProposalManager.Create(params)
         res.json({ success: true, data: result })
     } catch (err) {
         res.status(400).json({ success: false, error: err.message })
