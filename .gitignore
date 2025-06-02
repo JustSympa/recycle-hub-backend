@@ -9,3 +9,6 @@ test/
 node_modules/
 
 .recycle/
+
+.cursor/
+
