@@ -14,8 +14,6 @@ io.use(function(rq, rs, next){
     next()
 })
 
-io.get('/', (req, res) => res.send("OK") )
-
 // --- USER CRUD ---
 // CREATE User
 io.post('/users', async (req, res) => {
@@ -151,3 +149,5 @@ io.post('/iam/validate', async (req, res) => {
         res.status(400).json({ success: false, error: err.message })
     }
 })
+
+// io.get('/', (req, res) => res.json({ success: true, data: 'ok' }) )

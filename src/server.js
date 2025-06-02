@@ -1,6 +1,6 @@
 import * as Entity from './entity.js'
-import { db as Database } from "./database.js"
-import { storage as Storage } from "./storage.js"
+import { db as Database } from "./temp.database.js"
+import { storage as Storage } from "./temp.storage.js"
 import * as Vendor from "./vendor.js"
 
 export const IAM = {
@@ -45,9 +45,6 @@ export const DocumentManager = {
     },
     async ReadContent(doc = new Entity.Document) {
         const result = await Storage.downloadDocument(doc)
-        for(let element of result)
-            if(element.type == 'video' || element.type == 'image')
-                element.url = await Storage.getDocumentRessource(doc, element.url)
         return result
     },
     async Search(params = new Entity.SearchParams) {
@@ -56,8 +53,10 @@ export const DocumentManager = {
 }
 
 export const RequestManager = {
-    async Create(req = new Entity.Request) {
-        return (await Database.createRequest(req = new Entity.Request)).toObject()
+    async Create(params = new Entity.RequestParams) {
+        const result = (await Database.createRequest(params.request)).toObject()
+        await Database.addRequestCategories(result.id, params.categories)
+        return result
     },
     async Read(req = new Entity.Request) {
         return (await Database.readRequest(req)).toObject()
@@ -74,12 +73,14 @@ export const RequestManager = {
 }
 
 export const ProposalManager = {
-    async Create(proposal = new Entity.Proposal) {
-        const result = await Database.createProposal(proposal)
-        Storage.createProposal(proposal)
-        return result.toObject()
+    async Create(params = new Entity.ProposalParams) {
+        const proposal = await Database.createProposal(params.proposal)
+        await Database.addProposalCategories(proposal.id, params.categories)
+        await Storage.createProposal(proposal)
+        const result = await Storage.uploadProposalAsset()
+        return result
     },
-    async Upload(proposal = new Entity.Proposal, file = new Entity.File) {
-        return await Storage.uploadProposalAsset(proposal, file)
-    }
+    // async Upload(proposal = new Entity.Proposal, file = new Entity.File) {
+    //     return await Storage.uploadProposalAsset(proposal, file)
+    // }
 }

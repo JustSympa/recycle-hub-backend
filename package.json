@@ -11,12 +11,15 @@
   "author": "JustSympa",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.0",
-    "otp-generator": "^4.0.1"
+    "otp-generator": "^4.0.1",
+    "postgres": "^3.4.7"
   }
 }

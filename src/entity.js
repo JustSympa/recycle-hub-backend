@@ -16,8 +16,8 @@ export const NotificationTypes = {
 export class Category {
     id = 0; name = ''
     constructor(id, name) {
-        this.id = id ? id : this.id
-        this.name = name ? name : this.name
+        this.id = id
+        this.name = name
     }
     toString() { return this.toJSON() }
     toObject() { return { id: this.id, name: this.name }}
@@ -29,11 +29,11 @@ export class Category {
 export class Connection {
     id = 0; code = ''; created = new Date; phone = ''; state = ConnectionState.PENDING
     constructor(id, code, created, phone, state) {
-        this.id = id ? id : this.id
-        this.code = code ? code : this.code
-        this.created = created ? created : this.created
-        this.phone = phone ? phone : this.phone
-        this.state = state ? state : this.state
+        this.id = id
+        this.code = code
+        this.created = created
+        this.phone = phone
+        this.state = state
     }
     toString() { return this.toJSON() }
     toObject() { return { id: this.id, code: this.code, created: this.created, phone: this.phone, state: this.state } }
@@ -45,12 +45,12 @@ export class Connection {
 export class Document {
     id = 0; created = new Date; name = ''; type = DocumentTypes.TUTORIAL; description = ''; proposal = null
     constructor(id, created, name, type, description, proposal) {
-        this.id = id ? id : this.id
-        this.created = created ? created : this.created
-        this.name = name ? name : this.name
-        this.type = type ? type : this.type
-        this.description = description ? description : this.description
-        this.proposal = proposal ? proposal : this.proposal
+        this.id = id
+        this.created = created
+        this.name = name
+        this.type = type
+        this.description = description
+        this.proposal = proposal
     }
     toString() { return this.toJSON() }
     toObject() { return { id: this.id, created: this.created, name: this.name, type: this.type, description: this.description, proposal: this.proposal } }
@@ -78,12 +78,12 @@ export class File {
 export class Notification {
     id = 0; created = new Date; read = new Date; user = 0; type = NotificationTypes.PROPOSAL_ACCEPTED; message = ''
     constructor(id, created, read, user, type, message) {
-        this.id = id ? id : this.id
-        this.created = created ? created : this.created
-        this.read = read ? read : this.read
-        this.user = user ? user : this.user
-        this.type = type ? type : this.type
-        this.message = message ? message : this.message
+        this.id = id
+        this.created = created
+        this.read = read
+        this.user = user
+        this.type = type
+        this.message = message
     }
     toString() { return this.toJSON() }
     toObject() {return {id: this.id, created: this.created, read: this.read, user: this.user, type: this.type, message: this.message} }
@@ -95,10 +95,10 @@ export class Notification {
 export class Proposal {
     id = 0; user = 0; name = new Date; description = new Date
     constructor(id, user, name, description) {
-        this.id = id ? id : this.id
-        this.user = user ? user : this.user
-        this.name = name ? name : this.name
-        this.description = description ? description : this.description
+        this.id = id
+        this.user = user
+        this.name = name
+        this.description = description
     }
     toString() { return this.toJSON() }
     toObject() { return {id: this.id, user: this.user, name: this.name, description: this.description} }
@@ -107,20 +107,40 @@ export class Proposal {
     static fromJSON(object) { return Proposal.fromObject(JSON.parse(object)) }
 }
 
+export class ProposalParams {
+    proposal = new Proposal; categories = [0]; files = ['']
+    constructor(proposal, categories, files) { this.proposal = proposal; this.categories = categories; this.files = files }
+    toString() { return this.toJSON() }
+    toObject() { return {proposal: this.proposal, categories: this.categories, files: this.files} }
+    toJSON() { return JSON.stringify(this.toObject()) }
+    static fromObject(object) { return new Proposal(object.proposal, object.categories, object.files) }
+    static fromJSON(object) { return Proposal.fromObject(JSON.parse(object)) }
+}
+
 export class Request {
     id = 0; user = 0; name = ''; amount = 0; unit = ''; description = ''
     constructor(id, user, name, amount, unit, description) {
-        this.id = id ? id : this.id
-        this.user = user ? user : this.user
-        this.name = name ? name : this.name
-        this.amount = amount ? amount : this.amount
-        this.unit = unit ? unit : this.unit
-        this.description = description ? description : this.description
+        this.id = id
+        this.user = user
+        this.name = name
+        this.amount = amount
+        this.unit = unit
+        this.description = description
     }
     toString() { return this.toJSON() }
     toObject() { return { id: this.id, user: this.user, name: this.name, amount: this.amount, unit: this.unit, description: this.description } }
     toJSON() { return JSON.stringify(this.toObject()) }
     static fromObject(object) { return new Request(object.id, object.user, object.name, object.amount, object.unit, object.description)}
+    static fromJSON(object) { return Request.fromObject(JSON.parse(object)) }
+}
+
+export class RequestParams {
+    request = new Request; categories = [0]
+    constructor(request, categories) { this.request = request; this.categories = categories }
+    toString() { return this.toJSON() }
+    toObject() { return {request: this.request, categories: this.categories} }
+    toJSON() { return JSON.stringify(this.toObject()) }
+    static fromObject(object) { return new Request(object.request, object.categories) }
     static fromJSON(object) { return Request.fromObject(JSON.parse(object)) }
 }
 
@@ -138,11 +158,11 @@ export class SearchParams {
 export class User {
     id = 0; name = ''; token = ''; contact = ''; contact2 = ''
     constructor(id, name, token, contact, contact2) {
-        this.id = id ? id : this.id
-        this.name = name ? name : this.name
-        this.token = token ? token : this.token
-        this.contact = contact ? contact : this.contact
-        this.contact2 = contact2 ? contact2 : this.contact2
+        this.id = id
+        this.name = name
+        this.token = token
+        this.contact = contact
+        this.contact2 = contact2
     }
     toString() { return this.toJSON() }
     toObject() { return {id: this.id, name: this.name, token: this.token, contact: this.contact, contact2: this.contact2} }
