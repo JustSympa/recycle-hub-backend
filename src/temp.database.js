@@ -96,7 +96,7 @@ class DatabaseInterface {
     }
     async updateConnection(connection = new Entity.Connection) {
         const result = (await this.db.update(connections).set(connection.toObject()).returning()).at(0)
-        return Entity.Connection.fromObject({...result, ...connection})
+        return Entity.Connection.fromObject({...result, ...connection.toObject()})
     }
 
     async createUser(user = new Entity.User) {
@@ -111,7 +111,7 @@ class DatabaseInterface {
     }
     async updateUser(user = new Entity.User) {
         const result = (await this.db.update(users).set(user.toObject()).returning()).at(0)
-        return Entity.User.fromObject({...result, ...user})
+        return Entity.User.fromObject({...result, ...user.toObject()})
     }
     async createUserNotification(notification = new Entity.Notification) {
         notification.id = undefined

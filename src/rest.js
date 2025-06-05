@@ -1,7 +1,6 @@
 import express, { Router, request, response } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import multer from 'multer'
 import * as Server from './server.js'
 import * as Entity from './entity.js'
 
@@ -65,7 +64,7 @@ io.get('/users/:id/notifications', async (req, res) => {
         res.status(400).json({ success: false, error: err.message })
     }
 })
-// Get a single notification for a user
+// Mark notification as read for a user
 io.get('/users/:id/notifications/:notificationId', async (req, res) => {
     try {
         const notification = Entity.Notification.fromObject({ id: Number(req.params.notificationId), user: Number(req.params.id) })

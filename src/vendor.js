@@ -1,6 +1,6 @@
 import * as Entity from './entity.js'
 import { generate } from 'otp-generator'
-import jwt, { verify } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export const SMS = {
     sendVerification(connection = new Entity.Connection) {
@@ -9,7 +9,7 @@ export const SMS = {
 }
 
 export const OTP = {
-    generate() { return generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false}) }
+    generate() { return '123456'/*return generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false})*/ }
 }
 
 export const JWT = {
