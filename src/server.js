@@ -6,8 +6,11 @@ import * as Vendor from "./vendor.js"
 export const IAM = {
     async Login(connection = new Entity.Connection) {
         const user = await Database.readUserByContact({ contact: connection.phone, contact2: connection.phone })
-        if(!user) await Database.createUser(new Entity.User(undefined, 'user98235', '', connection.phone, ''))
-        return (await Database.createConnection(connection)).toObject()
+        if(!user) await Database.createUser(new Entity.User(undefined, `user${Vendor.OTP.generate()}`, '', connection.phone, ''))
+        connection.code = Vendor.OTP.generate()
+        const result = (await Database.createConnection(connection)).toObject()
+        Vendor.SMS.sendVerification(result)
+        return result
     },
     async Validate(connection = new Entity.Connection) {
         const c = await Database.readConnection({id : connection.id})
