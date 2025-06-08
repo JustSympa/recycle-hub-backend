@@ -7,7 +7,7 @@ export const IAM = {
     async Login(connection = new Entity.Connection) {
         const user = await Database.readUserByContact({ contact: connection.phone, contact2: connection.phone })
         if(!user) await Database.createUser(new Entity.User(undefined, 'user98235', '', connection.phone, ''))
-        (await Database.createConnection(connection)).toObject()
+        return (await Database.createConnection(connection)).toObject()
     },
     async Validate(connection = new Entity.Connection) {
         const c = await Database.readConnection({id : connection.id})
