@@ -113,6 +113,12 @@ class DatabaseInterface {
         const result = (await this.db.update(users).set(user.toObject()).returning()).at(0)
         return Entity.User.fromObject({...result, ...user.toObject()})
     }
+    async readUserProposals(user = new Entity.User) {
+        return (await this.db.select().from(proposals).where(eq(proposals.user, user.id))).map(Entity.Proposal.fromObject)
+    }
+    async readUserRequests(user = new Entity.Request) {
+        return (await this.db.select().from(requests).where(eq(requests.user, user.id))).map(Entity.User.fromObject)
+    }
     async createUserNotification(notification = new Entity.Notification) {
         notification.id = undefined
         return Entity.Notification.fromObject((await this.db.insert(notifications).values(notification.toObject()).returning()).at(0))    }
@@ -125,6 +131,10 @@ class DatabaseInterface {
         const read = Date.now()
         const result = (await this.db.update(notifications).set({read}).returning()).at(0)
         return Entity.Notification.fromObject({...result, read})
+    }
+
+    async readCategories() {
+        return (await this.db.select().from(categories)).map(Entity.Category.fromObject)
     }
 
     async readDocument(document = new Entity.Document) {

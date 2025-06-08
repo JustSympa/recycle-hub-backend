@@ -15,9 +15,9 @@ io.use(function(rq, rs, next){
 
 // --- USER CRUD & NOTIFICATIONS ---
 // READ User
-io.get('/users/:id', async (req, res) => {
+io.get('/user/read', async (req, res) => {
     try {
-        const user = Entity.User.fromObject({ id: Number(req.params.id) })
+        const user = Entity.User.fromObject({ id: Number(req.body.id) })
         const result = await Server.UserManager.Read(user)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -25,39 +25,39 @@ io.get('/users/:id', async (req, res) => {
     }
 })
 // UPDATE User
-io.put('/users/:id', async (req, res) => {
+io.put('/user/update', async (req, res) => {
     try {
-        const user = Entity.User.fromObject({ ...req.body, id: Number(req.params.id) })
+        const user = Entity.User.fromObject({ ...req.body, id: Number(req.body.id) })
         const result = await Server.UserManager.Update(user)
         res.json({ success: true, data: result })
     } catch (err) {
         res.status(400).json({ success: false, error: err.message })
     }
 })
-// CREATE User
-io.post('/users', async (req, res) => {
-    try {
-        const user = Entity.User.fromObject(req.body)
-        const result = await Server.UserManager.Update(user)
-        res.json({ success: true, data: result })
-    } catch (err) {
-        res.status(400).json({ success: false, error: err.message })
-    }
-})
-// DELETE User (simulate by setting name to empty)
-io.delete('/users/:id', async (req, res) => {
-    try {
-        const user = Entity.User.fromObject({ id: Number(req.params.id), name: '' })
-        const result = await Server.UserManager.Update(user)
-        res.json({ success: true, data: result })
-    } catch (err) {
-        res.status(400).json({ success: false, error: err.message })
-    }
-})
+// // CREATE User
+// io.post('/user', async (req, res) => {
+//     try {
+//         const user = Entity.User.fromObject(req.body)
+//         const result = await Server.UserManager.Update(user)
+//         res.json({ success: true, data: result })
+//     } catch (err) {
+//         res.status(400).json({ success: false, error: err.message })
+//     }
+// })
+// // DELETE User (simulate by setting name to empty)
+// io.delete('/user/:id', async (req, res) => {
+//     try {
+//         const user = Entity.User.fromObject({ id: Number(req.params.id), name: '' })
+//         const result = await Server.UserManager.Update(user)
+//         res.json({ success: true, data: result })
+//     } catch (err) {
+//         res.status(400).json({ success: false, error: err.message })
+//     }
+// })
 // Get all notifications for a user
-io.get('/users/:id/notifications', async (req, res) => {
+io.get('/user/notifications', async (req, res) => {
     try {
-        const user = Entity.User.fromObject({ id: Number(req.params.id) })
+        const user = Entity.User.fromObject({ id: Number(req.body.id) })
         const result = await Server.UserManager.Notifications(user)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -65,9 +65,9 @@ io.get('/users/:id/notifications', async (req, res) => {
     }
 })
 // Mark notification as read for a user
-io.get('/users/:id/notifications/:notificationId', async (req, res) => {
+io.post('/user/readnotification', async (req, res) => {
     try {
-        const notification = Entity.Notification.fromObject({ id: Number(req.params.notificationId), user: Number(req.params.id) })
+        const notification = Entity.Notification.fromObject({ id: Number(req.body.id), user: Number(req.params.id) })
         const result = await Server.UserManager.ReadNotification(notification)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -78,9 +78,9 @@ io.get('/users/:id/notifications/:notificationId', async (req, res) => {
 // --- DOCUMENT ---
 // CREATE Document (not implemented in server)
 // READ Document
-io.get('/documents/:id', async (req, res) => {
+io.get('/document/read', async (req, res) => {
     try {
-        const doc = Entity.Document.fromObject({ id: Number(req.params.id) })
+        const doc = Entity.Document.fromObject({ id: Number(req.body.id) })
         const result = await Server.DocumentManager.Read(doc)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -90,7 +90,7 @@ io.get('/documents/:id', async (req, res) => {
 // UPDATE Document (not implemented in server)
 // DELETE Document (not implemented in server)
 // SEARCH Document
-io.post('/documents/search', async (req, res) => {
+io.get('/document/search', async (req, res) => {
     try {
         const params = Entity.SearchParams.fromObject(req.body)
         const result = await Server.DocumentManager.Search(params)
@@ -100,9 +100,9 @@ io.post('/documents/search', async (req, res) => {
     }
 })
 // READ Document Content
-io.get('/documents/:id/content', async (req, res) => {
+io.get('/document/content', async (req, res) => {
     try {
-        const doc = Entity.Document.fromObject({ id: Number(req.params.id) })
+        const doc = Entity.Document.fromObject({ id: Number(req.body.id) })
         const result = await Server.DocumentManager.ReadContent(doc)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -112,7 +112,7 @@ io.get('/documents/:id/content', async (req, res) => {
 
 // --- REQUEST ---
 // CREATE Request
-io.post('/requests', async (req, res) => {
+io.post('/request/create', async (req, res) => {
     try {
         const params = Entity.RequestParams.fromObject(req.body)
         const result = await Server.RequestManager.Create(params)
@@ -122,9 +122,9 @@ io.post('/requests', async (req, res) => {
     }
 })
 // READ Request
-io.get('/requests/:id', async (req, res) => {
+io.get('/request/read', async (req, res) => {
     try {
-        const request = Entity.Request.fromObject({ id: Number(req.params.id) })
+        const request = Entity.Request.fromObject({ id: Number(req.body.id) })
         const result = await Server.RequestManager.Read(request)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -132,7 +132,7 @@ io.get('/requests/:id', async (req, res) => {
     }
 })
 // SEARCH Request
-io.post('/requests/search', async (req, res) => {
+io.post('/request/search', async (req, res) => {
     try {
         const params = Entity.SearchParams.fromObject(req.body)
         const result = await Server.RequestManager.Search(params)
@@ -142,9 +142,9 @@ io.post('/requests/search', async (req, res) => {
     }
 })
 // UPDATE Request
-io.put('/requests/:id', async (req, res) => {
+io.put('/request/update', async (req, res) => {
     try {
-        const request = Entity.Request.fromObject({ ...req.body, id: Number(req.params.id) })
+        const request = Entity.Request.fromObject(req.body)
         const result = await Server.RequestManager.Update(request)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -152,9 +152,9 @@ io.put('/requests/:id', async (req, res) => {
     }
 })
 // DELETE Request
-io.delete('/requests/:id', async (req, res) => {
+io.delete('/request/delete', async (req, res) => {
     try {
-        const request = Entity.Request.fromObject({ id: Number(req.params.id) })
+        const request = Entity.Request.fromObject({ id: Number(req.body.id) })
         const result = await Server.RequestManager.Delete(request)
         res.json({ success: true, data: result })
     } catch (err) {
@@ -164,7 +164,7 @@ io.delete('/requests/:id', async (req, res) => {
 
 // --- PROPOSAL ---
 // CREATE Proposal
-io.post('/proposals', async (req, res) => {
+io.post('/proposal/create', async (req, res) => {
     try {
         const params = Entity.ProposalParams.fromObject(req.body)
         const result = await Server.ProposalManager.Create(params)

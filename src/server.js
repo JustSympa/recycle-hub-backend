@@ -31,12 +31,24 @@ export const UserManager = {
     async Update(user = new Entity.User) {
         return (await Database.updateUser(user)).toObject()
     },
+    async Requests(user = new Entity.User) {
+        return [...await Database.readUserRequests(user)].map(n => n.toObject())
+    },
+    async Proposals(user = new Entity.User) {
+        return [...await Database.readUserProposals(user)].map(n => n.toObject())
+    },
     async Notifications(user = new Entity.User) {
         return [...await Database.readUserNotifications(user)].map(n => n.toObject())
     },
     async ReadNotification(notification) {
         return (await Database.readUserNotification(notification)).toObject()
     },
+}
+
+export const Categories = {
+    async Read() {
+        return [...await Database.readCategories()].map(n => n.toObject())
+    }
 }
 
 export const DocumentManager = {
@@ -56,7 +68,7 @@ export const RequestManager = {
     async Create(params = new Entity.RequestParams) {
         const result = (await Database.createRequest(params.request)).toObject()
         await Database.addRequestCategories(result.id, params.categories)
-        return result
+        return {request: result, categories: params.categories}
     },
     async Read(req = new Entity.Request) {
         return (await Database.readRequest(req)).toObject()
@@ -77,8 +89,8 @@ export const ProposalManager = {
         const proposal = await Database.createProposal(params.proposal)
         await Database.addProposalCategories(proposal.id, params.categories)
         await Storage.createProposal(proposal)
-        const result = await Storage.uploadProposalAsset()
-        return result
+        const files = await Storage.uploadProposalAsset()
+        return {proposal: proposal.toObject(), categories: params.categories, files}
     },
     // async Upload(proposal = new Entity.Proposal, file = new Entity.File) {
     //     return await Storage.uploadProposalAsset(proposal, file)
