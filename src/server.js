@@ -12,10 +12,15 @@ export const IAM = {
         Vendor.SMS.sendVerification(result)
         return result
     },
+    async RefreshOTP(connection = new Entity.Connection) {
+        connection.code = Vendor.OTP.generate()
+        await Database.updateConnection({id: connection.id, code: connection.code})
+        return result
+    },
     async Validate(connection = new Entity.Connection) {
         const c = await Database.readConnection({id : connection.id})
-        if(c.code == connection.code) {
-            await Database.updateConnection({state: Entity.ConnectionState.APPROVED})
+        if(c.code == connection.code ) {
+            await Database.updateConnection({id: c.id, state: Entity.ConnectionState.APPROVED})
             const user = await Database.readUserByContact(connection.phone)
             user.token = Vendor.JWT.generate(user)
             await Database.updateUser({id: user.id, token: user.token})
