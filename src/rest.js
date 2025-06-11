@@ -8,14 +8,18 @@ import * as Entity from './entity.js'
 // Configure multer for file upload
 const upload = multer({
     storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB limit
-    }
+    // limits: {
+    //     fileSize: 5 * 1024 * 1024, // 5MB limit
+    // }
 })
 
 export const io = express()
 io.use(cors())
-io.use(bodyParser.json())
+const skip_bodyparser = ['/proposal/create']
+io.use(function(req, res, next){
+    if(skip_bodyparser.includes(req.path)) next()
+    else bodyParser.json()(req, res, next)
+})
 io.use(function(rq, rs, next){
     if(rq.method == 'GET') rq.body = {...rq.body, ...rq.query}
     // console.log(rq.body)
@@ -98,22 +102,20 @@ io.post('/user/proposals', upload.array('files', 5), async (req, res) => {
     try {
         const user = Entity.User.fromObject({ id: Number(req.body.id) })
         const proposals = await Server.UserManager.Proposals(user)
-        
-        // If files were uploaded, process them
-        if (req.files && req.files.length > 0) {
-            const fileNames = req.files.map(file => file.originalname)
-            const uploadUrls = await Server.ProposalManager.Create({
-                proposal: new Entity.Proposal(),
-                categories: []
-            })
+        // // If files were uploaded, process them
+        // if (req.files && req.files.length > 0) {
+        //     const fileNames = req.files.map(file => file.originalname)
+        //     const uploadUrls = await Server.ProposalManager.Create({
+        //         proposal: new Entity.Proposal(),
+        //         categories: []
+        //     })
             
-            // Add the upload URLs to the response
-            proposals.push({
-                ...proposals[0],
-                files: uploadUrls.files
-            })
-        }
-        
+        //     // Add the upload URLs to the response
+        //     proposals.push({
+        //         ...proposals[0],
+        //         files: uploadUrls.files
+        //     })
+        // }
         res.json({ success: true, data: proposals })
     } catch (err) {
         res.status(400).json({ success: false, error: err.message })
@@ -209,7 +211,7 @@ io.delete('/request/delete', async (req, res) => {
 
 // --- PROPOSAL ---
 // CREATE Proposal
-io.post('/proposal/create', async (req, res) => {
+io.post('/proposal/create', upload.array('files'), async (req, res) => {
     try {
         const params = Entity.ProposalParams.fromObject(req.body)
         const result = await Server.ProposalManager.Create(params)
