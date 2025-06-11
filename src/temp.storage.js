@@ -8,8 +8,8 @@ class StorageInterface {
     async createProposal(proposal = new Entity.Proposal) {
         return ''
     }
-    async uploadProposalAsset(proposal = new Entity.Proposal, files = ['']) {
-        return await Promise.all(files.map(async file => (await this.client.storage.from('cdn').createSignedUploadUrl(`proposals/pro${proposal.id}/${file}`)).data))
+    async uploadProposalAsset(proposal = new Entity.Proposal, files = []) {
+        return await Promise.all(files.map(async file => (await this.client.storage.from('cdn').upload(`proposals/pro${proposal.id}/${file}`, file )).data))
     }
     // download content of ./documents/document{id}/content.json
     async downloadDocument(document = new Entity.Document) {
