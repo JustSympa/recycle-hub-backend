@@ -4,6 +4,7 @@
 # Testing
 sandbox/
 test/
+*.test.js
 
 # dependencies
 node_modules/

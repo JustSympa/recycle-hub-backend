@@ -27,18 +27,19 @@ export class Category {
 }
 
 export class Connection {
-    id = 0; code = ''; created = new Date; phone = ''; state = ConnectionState.PENDING
-    constructor(id, code, created, phone, state) {
+    id = 0; code = ''; created = new Date; phone = ''; mail = ''; state = ConnectionState.PENDING
+    constructor(id, code, created, phone, mail, state) {
         this.id = id
         this.code = code
         this.created = created
         this.phone = phone
+        this.mail = mail
         this.state = state
     }
     toString() { return this.toJSON() }
-    toObject() { return { id: this.id, code: this.code, created: this.created, phone: this.phone, state: this.state } }
+    toObject() { return { id: this.id, code: this.code, created: this.created, phone: this.phone, mail: this.mail, state: this.state } }
     toJSON() { return JSON.stringify(this.toObject()) }
-    static fromObject(object) { return new Connection(object.id, object.code, object.created, object.phone, object.state) }
+    static fromObject(object) { return new Connection(object.id, object.code, object.created, object.phone, object.mail, object.state) }
     static fromJSON(object) { return Connection.fromObject(JSON.parse(object)) }
 }
 

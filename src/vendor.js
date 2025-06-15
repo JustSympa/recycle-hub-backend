@@ -2,6 +2,7 @@ import * as Entity from './entity.js'
 import axios from 'axios'
 import { generate } from 'otp-generator'
 import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
 
 export const SMS = {
     token_type: '',
@@ -47,8 +48,33 @@ export const SMS = {
     
 }
 
+export const Mail = {
+    transporter: nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS
+        }
+    }),
+    async sendVerification(connection = new Entity.Connection) {
+        return new Promise((resolve, reject) => {
+            console.log(`Your RecycleHub verification code is ${connection.code}. Dont share it!`)
+            this.transporter.sendMail( {
+                from: `"Reclycle Hub" <${process.env.MAIL_USER}>`,
+                to: connection.mail,
+                subject: 'RecycleHub Verification',
+                text: `Your RecycleHub verification code is ${connection.code}. Dont share it!`
+            },
+            (err, info) => {
+                if(err) reject(err)
+                else resolve(info)
+            })
+        })
+    }
+}
+
 export const OTP = {
-    generate() { return '123456'/*return generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false})*/ }
+    generate() { return generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false}) }
 }
 
 export const JWT = {
