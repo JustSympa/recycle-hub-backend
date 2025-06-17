@@ -10,6 +10,7 @@ export const IAM = {
         connection.code = Vendor.OTP.generate()
         const result = (await Database.createConnection(connection)).toObject()
         Vendor.Mail.sendVerification(result)
+        result.code = undefined
         return result
     },
     async RefreshOTP(connection = new Entity.Connection) {
