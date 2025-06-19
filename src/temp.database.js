@@ -104,10 +104,12 @@ class DatabaseInterface {
         return Entity.User.fromObject((await this.db.insert(users).values(user.toObject()).returning()).at(0))
     }
     async readUser(user = new Entity.User) {
-        return Entity.User.fromObject((await this.db.select().from(users).where(eq(users.id, user.id))).at(0))
+        const result = (await this.db.select().from(users).where(eq(users.id, user.id))).at(0)
+        return result ? Entity.User.fromObject(result) : undefined
     }
     async readUserByContact(user = new Entity.User) {
-        return Entity.User.fromObject((await this.db.select().from(users).where(eq(users.contact, user.contact))).at(0))
+        const result = (await this.db.select().from(users).where(eq(users.contact, user.contact))).at(0)
+        return result ? Entity.User.fromObject(result) : undefined
     }
     async updateUser(user = new Entity.User) {
         const result = (await this.db.update(users).set(user.toObject()).returning()).at(0)
