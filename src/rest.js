@@ -34,6 +34,7 @@ io.get('/user/read', async (req, res) => {
         const result = await Server.UserManager.Read(user)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(404).json({ success: false, error: err.message })
     }
 })
@@ -44,6 +45,7 @@ io.put('/user/update', async (req, res) => {
         const result = await Server.UserManager.Update(user)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -54,7 +56,8 @@ io.put('/user/update', async (req, res) => {
   //      const result = await Server.UserManager.Update(user)
   //      res.json({ success: true, data: result })
   //  } catch (err) {
- //       res.status(400).json({ success: false, error: err.message })
+ // console.log(err)      
+ // res.status(400).json({ success: false, error: err.message })
  //   }
 //})
 // DELETE User
@@ -64,7 +67,8 @@ io.put('/user/update', async (req, res) => {
   //      const result = await Server.UserManager.Update(user)
   //      res.json({ success: true, data: result })
   //  } catch (err) {
-  //      res.status(400).json({ success: false, error: err.message })
+  // console.log(err)     
+  // res.status(400).json({ success: false, error: err.message })
   //  }
 //  })
 // Get all notifications for a user
@@ -74,6 +78,7 @@ io.get('/user/notifications', async (req, res) => {
         const result = await Server.UserManager.Notifications(user)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -84,6 +89,7 @@ io.post('/user/readnotification', async (req, res) => {
         const result = await Server.UserManager.ReadNotification(notification)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(404).json({ success: false, error: err.message })
     }
 })
@@ -94,6 +100,7 @@ io.get('/user/requests', async (req, res) => {
         const result = await Server.UserManager.Requests(user)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -118,6 +125,7 @@ io.post('/user/proposals', upload.array('files', 5), async (req, res) => {
         // }
         res.json({ success: true, data: proposals })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -131,6 +139,7 @@ io.get('/document/read', async (req, res) => {
         const result = await Server.DocumentManager.Read(doc)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(404).json({ success: false, error: err.message })
     }
 })
@@ -143,6 +152,7 @@ io.get('/document/search', async (req, res) => {
         const result = await Server.DocumentManager.Search(params)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -153,6 +163,7 @@ io.get('/document/content', async (req, res) => {
         const result = await Server.DocumentManager.ReadContent(doc)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(404).json({ success: false, error: err.message })
     }
 })
@@ -165,6 +176,7 @@ io.post('/request/create', async (req, res) => {
         const result = await Server.RequestManager.Create(params)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -175,6 +187,7 @@ io.get('/request/read', async (req, res) => {
         const result = await Server.RequestManager.Read(request)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(404).json({ success: false, error: err.message })
     }
 })
@@ -185,6 +198,7 @@ io.post('/request/search', async (req, res) => {
         const result = await Server.RequestManager.Search(params)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -195,6 +209,7 @@ io.put('/request/update', async (req, res) => {
         const result = await Server.RequestManager.Update(request)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -205,6 +220,7 @@ io.delete('/request/delete', async (req, res) => {
         const result = await Server.RequestManager.Delete(request)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -217,6 +233,7 @@ io.post('/proposal/create', upload.array('files'), async (req, res) => {
         const result = await Server.ProposalManager.Create(params)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -232,6 +249,7 @@ io.post('/iam/login', async (req, res) => {
         const result = await Server.IAM.Login(connection)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -242,6 +260,7 @@ io.post('/iam/validate', async (req, res) => {
         const result = await Server.IAM.Validate(connection)
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
@@ -253,6 +272,7 @@ io.get('/categories', async (req, res) => {
         const result = await Server.Categories.Read()
         res.json({ success: true, data: result })
     } catch (err) {
+        console.log(err)
         res.status(400).json({ success: false, error: err.message })
     }
 })
