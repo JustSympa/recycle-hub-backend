@@ -30,6 +30,7 @@ const connections = table('connections', {
     id : t.integer('id').primaryKey().generatedAlwaysAsIdentity(),
     created_at: t.timestamp('created_at'),
     phone: t.text('phone'),
+    mail: t.text('email'),
     code: t.varchar('code', {length: 6}),
     state: t.integer('state')
 })
@@ -95,8 +96,9 @@ class DatabaseInterface {
         return Entity.Connection.fromObject((await this.db.select().from(connections).where(eq(connections.id, connection.id))).at(0))
     }
     async updateConnection(connection = new Entity.Connection) {
-        const result = (await this.db.update(connections).set(connection.toObject()).returning()).at(0)
-        return Entity.Connection.fromObject({...result, ...connection.toObject()})
+        const object = connection instanceof Entity.Connection ? connection.toObject() : connection
+        const result = (await this.db.update(connections).set(object).where((eq(connections.id, connection.id))).returning()).at(0)
+        return Entity.Connection.fromObject({...result, ...object})
     }
 
     async createUser(user = new Entity.User) {
@@ -112,8 +114,9 @@ class DatabaseInterface {
         return result ? Entity.User.fromObject(result) : undefined
     }
     async updateUser(user = new Entity.User) {
-        const result = (await this.db.update(users).set(user.toObject()).returning()).at(0)
-        return Entity.User.fromObject({...result, ...user.toObject()})
+        const object = user instanceof Entity.User ? user.toObject() : user
+        const result = (await this.db.update(users).set(object).where(eq(users.id, user.id)).returning()).at(0)
+        return Entity.User.fromObject({...result, ...object})
     }
     async readUserProposals(user = new Entity.User) {
         return (await this.db.select().from(proposals).where(eq(proposals.user, user.id))).map(Entity.Proposal.fromObject)
@@ -131,7 +134,7 @@ class DatabaseInterface {
     }
     async readUserNotification(notification = new Entity.Notification) {
         const read = Date.now()
-        const result = (await this.db.update(notifications).set({read}).returning()).at(0)
+        const result = (await this.db.update(notifications).set({read}).where(eq(notifications.id, notification.id)).returning()).at(0)
         return Entity.Notification.fromObject({...result, read})
     }
 
@@ -192,8 +195,9 @@ class DatabaseInterface {
         return (await q).map(Entity.Request.fromObject)
     }
     async updateRequest(request = new Entity.Request) {
-        const result = (await this.db.update(requests).set(request.toObject()).returning()).at(0)
-        return Entity.Request.fromObject({...result, ...request})
+        const object = request instanceof Entity.Request ? request.toObject() : request
+        const result = (await this.db.update(requests).set(object).where().returning()).at(0)
+        return Entity.Request.fromObject({...result, ...object})
     }
     async deleteRequest(request = new Entity.Request) {
         return Entity.Request.fromObject((await this.db.delete(requests).where(eq(requests.id, request.id)).returning()).at(0))

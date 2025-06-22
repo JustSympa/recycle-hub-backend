@@ -5,7 +5,8 @@ import * as Vendor from "./vendor.js"
 
 export const IAM = {
     async Login(connection = new Entity.Connection) {
-        const user = await Database.readUserByContact({ contact: connection.phone, contact2: connection.phone })
+        // console.log(connection)
+        const user = await Database.readUserByContact({ contact: connection.phone, contact2: connection.mail })
         if(!user) await Database.createUser(new Entity.User(undefined, `user${Vendor.OTP.generate()}`, '', connection.phone, connection.mail))
         connection.code = Vendor.OTP.generate()
         const result = (await Database.createConnection(connection)).toObject()
@@ -15,20 +16,21 @@ export const IAM = {
     },
     async RefreshOTP(connection = new Entity.Connection) {
         connection.code = Vendor.OTP.generate()
-        await Database.updateConnection({id: connection.id, code: connection.code})
-        return result
+        await Database.updateConnection(new Entity.Connection(connection.id, connection.code))
+        connection.code = undefined
+        return connection
     },
     async Validate(connection = new Entity.Connection) {
-        const c = await Database.readConnection({id : connection.id})
+        const c = await Database.readConnection(connection)
         if(c.code == connection.code ) {
             await Database.updateConnection({id: c.id, state: Entity.ConnectionState.APPROVED})
-            const user = await Database.readUserByContact(connection.phone)
+            const user = await Database.readUserByContact({contact: connection.phone, contact2: connection.mail})
             user.token = Vendor.JWT.generate(user)
             await Database.updateUser({id: user.id, token: user.token})
             return user.toObject()
         }
         else {
-            throw new Error("Wrong OTP or Unexpected error!")    
+            throw new Error("WrongOTP")    
         }
     }
 }
