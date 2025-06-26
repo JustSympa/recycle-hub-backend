@@ -10,7 +10,8 @@ export const DocumentTypes = {
 
 export const NotificationTypes = {
     REQUEST_ADDED: 1,
-    PROPOSAL_ACCEPTED: 2
+    PROPOSAL_ACCEPTED: 2,
+    OTHER: 4
 }
 
 export class Category {
@@ -114,7 +115,7 @@ export class ProposalParams {
     toString() { return this.toJSON() }
     toObject() { return {proposal: this.proposal, categories: this.categories, files: this.files} }
     toJSON() { return JSON.stringify(this.toObject()) }
-    static fromObject(object) { return new Proposal(object.proposal, object.categories, object.files) }
+    static fromObject(object) { return new Proposal(object.proposal,  object.categories ? object.categories : object["categories[]"], object.files) }
     static fromJSON(object) { return Proposal.fromObject(JSON.parse(object)) }
 }
 
@@ -141,7 +142,7 @@ export class RequestParams {
     toString() { return this.toJSON() }
     toObject() { return {request: this.request, categories: this.categories} }
     toJSON() { return JSON.stringify(this.toObject()) }
-    static fromObject(object) { return new Request(object.request, object.categories) }
+    static fromObject(object) { return new Request(object.request,  object.categories ? object.categories : object["categories[]"]) }
     static fromJSON(object) { return Request.fromObject(JSON.parse(object)) }
 }
 
@@ -152,7 +153,7 @@ export class SearchParams {
     toString() { return this.toJSON() }
     toObject() { return {text: this.text, categories: this.categories} }
     toJSON() { return JSON.stringify(this.toObject()) }
-    static fromObject(object) { return new SearchParams(object.text, object.categories) }
+    static fromObject(object) { return new SearchParams(object.text, object.categories ? object.categories : object["categories[]"]) }
     static fromJSON(object) { return SearchParams.fromObject(JSON.parse(object)) }
 }
 
