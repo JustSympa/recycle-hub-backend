@@ -17,7 +17,7 @@ class StorageInterface {
         const result = JSON.parse(await data.text())
         for(let element of result.sections)
             if(element.type == 'video' || element.type == 'image')
-                element.link = this.client.storage.from('cdn').getPublicUrl(`documents/doc${document.id}/${element.link}`)
+                element.link = this.client.storage.from('cdn').getPublicUrl(`documents/doc${document.id}/${element.link}`).data.publicUrl
         return result
     }
 }
