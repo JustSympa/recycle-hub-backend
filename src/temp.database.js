@@ -148,7 +148,7 @@ class DatabaseInterface {
     }
     async searchDocument(params = new Entity.SearchParams) {
         const q = this.db.select(getTableColumns(documents)).from(documents)
-        if(params.categories.length)
+        if(params.categories?.length)
         q.leftJoin(document_categories, eq(documents.id, document_categories.document))
         .leftJoin(categories, eq(document_categories.category, categories.id))
         .groupBy(documents.id)
@@ -186,7 +186,7 @@ class DatabaseInterface {
     }
     async searchRequest(params = new Entity.SearchParams) {
         const q = this.db.select(getTableColumns(requests)).from(requests)
-        if(params.categories.length)
+        if(params.categories?.length)
         q.leftJoin(request_categories, eq(requests.id, request_categories.request))
         .leftJoin(categories, eq(request_categories.category, categories.id))
         .groupBy(requests.id)
