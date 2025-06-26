@@ -126,7 +126,8 @@ class DatabaseInterface {
     }
     async createUserNotification(notification = new Entity.Notification) {
         notification.id = undefined
-        return Entity.Notification.fromObject((await this.db.insert(notifications).values(notification.toObject()).returning()).at(0))    }
+        return Entity.Notification.fromObject((await this.db.insert(notifications).values(notification.toObject()).returning()).at(0))
+    }
     //     readNotification        |      readNotifications
     // Mark a notification as read | Checks for not read notifications
     async readUserNotifications(user = new Entity.User) {

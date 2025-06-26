@@ -17,6 +17,7 @@ export const IAM = {
     async RefreshOTP(connection = new Entity.Connection) {
         connection.code = Vendor.OTP.generate()
         await Database.updateConnection(new Entity.Connection(connection.id, connection.code))
+        await Vendor.Mail.sendVerification(connection)
         connection.code = undefined
         return connection
     },
@@ -25,6 +26,9 @@ export const IAM = {
         if(c.code == connection.code ) {
             await Database.updateConnection({id: c.id, state: Entity.ConnectionState.APPROVED})
             const user = await Database.readUserByContact({contact: connection.phone, contact2: connection.mail})
+            if(!user.token.length) Database.createUserNotification(
+                new Entity.Notification(undefined, new Date, null, user.id, Entity.NotificationTypes.OTHER, "Welcome in RecycleHub 👋😁!")
+            )
             user.token = Vendor.JWT.generate(user)
             await Database.updateUser({id: user.id, token: user.token})
             return user.toObject()
