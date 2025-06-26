@@ -133,7 +133,7 @@ class DatabaseInterface {
         return (await this.db.select().from(notifications).where(eq(notifications.user, user.id))).map(Entity.Notification.fromObject)
     }
     async readUserNotification(notification = new Entity.Notification) {
-        const read = Date.now()
+        const read = new Date()
         const result = (await this.db.update(notifications).set({read}).where(eq(notifications.id, notification.id)).returning()).at(0)
         return Entity.Notification.fromObject({...result, read})
     }
