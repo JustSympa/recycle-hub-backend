@@ -92,7 +92,7 @@ export const RequestManager = {
         const tmp = await Database.searchRequest(params)
         const result = []
         for(let rq of tmp) {
-            const user = await Database.readUser({id: rq.id})
+            const user = await Database.readUser({id: rq.user})
             result.push({...rq.toObject(), user: { name: user.name, contact: user.contact, contact2: user.contact2 }})
         }
         return result
