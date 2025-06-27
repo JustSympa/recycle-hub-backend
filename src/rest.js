@@ -192,7 +192,7 @@ io.get('/request/read', async (req, res) => {
     }
 })
 // SEARCH Request
-io.post('/request/search', async (req, res) => {
+io.get('/request/search', async (req, res) => {
     try {
         const params = Entity.SearchParams.fromObject(req.body)
         const result = await Server.RequestManager.Search(params)

@@ -89,7 +89,13 @@ export const RequestManager = {
         return (await Database.readRequest(req)).toObject()
     },
     async Search(params = new Entity.SearchParams) {
-        return [...await Database.searchRequest(params)].map(r => r.toObject())
+        const tmp = await Database.searchRequest(params)
+        const result = []
+        for(let rq of tmp) {
+            const user = await Database.readUser({id: rq.id})
+            result.push({...rq.toObject(), user: { name: user.name, contact: user.contact, contact2: user.contact2 }})
+        }
+        return result
     },
     async Update(req = new Entity.Request) {
         return (await Database.updateRequest(req)).toObject()
